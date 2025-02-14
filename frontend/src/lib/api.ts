@@ -10,9 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8100/api';
-
-export async function fetchApi(path: string, options: FetchOptions = {}) {
+export async function fetchApi(fullUrl: string, options: FetchOptions = {}) {
   const { data, headers: customHeaders = {}, ...restOptions } = options;
 
   // Get token from localStorage
@@ -50,11 +48,6 @@ export async function fetchApi(path: string, options: FetchOptions = {}) {
   }
 
   try {
-    // Ensure path starts with a forward slash if it's not already present
-    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-    // Remove /api prefix if it's included in the path since it's already in the base URL
-    const cleanPath = normalizedPath.startsWith('/api/') ? normalizedPath.substring(4) : normalizedPath;
-    const fullUrl = `${API_BASE_URL}${cleanPath}`;
 
     const response = await fetch(fullUrl, config);
 
